@@ -1,8 +1,8 @@
-import logo from './logo.svg';
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
+  let [pokemonList, setPokemonList] = useState({})
   return (
     <div className="App" id="Changed">
       <header className="App-header">
@@ -10,8 +10,19 @@ function App() {
          console.log("ehlo there")
          var obj = document.getElementById("Changed")
          obj.style.backgroundColor = "#FFD712"
-       }} className="ChangeMe">Hello There you son of a bitch</button>
+         axios.get("https://pokeapi.co/api/v2/pokemon/ditto").then(
+           res => {
+             console.log("This is res.data\n" + res.data)
+             setPokemonList(res.data)
+           }
+         )
+         console.log("this is pokemonList\n" + pokemonList)
+       }
+       } className="ChangeMe">Hello There you son of a bitch</button>
       </header>
+      <div>
+        {pokemonList.name}
+      </div>
     </div>
   );
 }
