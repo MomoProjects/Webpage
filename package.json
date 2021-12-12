@@ -22,7 +22,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "gitadd": "git add ."
+    "pregit": "git add .",
+    "git": "git commit -m \"Upload changes\"",
+    "postgit": "git push origin"
   },
   "eslintConfig": {
     "extends": [
