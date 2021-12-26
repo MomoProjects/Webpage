@@ -1,30 +1,64 @@
-import React, { useState } from 'react';
+// eslint-disable
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import "./App.css";
+import react from "react";
+import { Grid, Button } from '@mui/material';
+import TopScorenumbers from './Scorenumbers/TopScorenumbers'
+import LeftScorenumber from './Scorenumbers/LeftScoreNumbers'
+import Playerboard from './Playerboard/playerboard'
+import { setGameData, setUpdate } from './counterSlice'
+import { useDispatch, connect } from "react-redux";
+import socket from './Resources/socket'
 
-function App() {
-  let [pokemonList, setPokemonList] = useState({})
+
+function App(props) {
+
+  socket.on('connect',()=>{
+    console.log("Connected")
+  })
+  const dispatch = useDispatch();
+  const [reRen, setReRen] = useState(true);
+
+  useEffect(() => {
+
+    getGameInfo();
+    console.log("Use effect triggered")
+
+  }, [reRen])
+  socket.off().on('Update-Notification', (e)=>{
+    console.log(e)
+    console.log("calling api again");
+    getGameInfo();
+  })
+  var getGameInfo = () =>{
+    axios.get('https://cryptic-wildwood-11303.herokuapp.com/game/0').then(async (res) => {
+      let data = await res.data;
+      dispatch(setGameData(data));
+      dispatch(setUpdate(!props.trigger))
+    })
+  }
+
   return (
-    <div className="App" id="Changed">
-      <header className="App-header">
-       <button onClick={() => {
-         console.log("ehlo there")
-         var obj = document.getElementById("Changed")
-         obj.style.backgroundColor = "#FFD712"
-         axios.get("https://pokeapi.co/api/v2/pokemon/ditto").then(
-           res => {
-             console.log("This is res.data\n" + res.data)
-             setPokemonList(res.data)
-           }
-         )
-         console.log("this is pokemonList\n" + pokemonList)
-       }
-       } className="ChangeMe">Hello There you son of a bitch</button>
-      </header>
-      <div>
-        {pokemonList.name}
-      </div>
-    </div>
+    <react.Fragment>
+      <Grid container className="Yello">
+        <Grid item xs={2}></Grid>
+        <Grid item xs={10}><TopScorenumbers /> </Grid>
+        <Grid item xs={2}><LeftScorenumber /></Grid>
+        <Grid item xs={10}><Playerboard /></Grid>
+      </Grid>
+
+      <Button onClick={() => {setReRen(!props.trigger) }}>Push me</Button>
+
+    </react.Fragment>
   );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    trigger: state.counter.Trigger,
+    all: state.counter,
+  }
+}
+
+export default connect(mapStateToProps)(App);
