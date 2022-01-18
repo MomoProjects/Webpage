@@ -16,7 +16,7 @@ export default function App() {
           <Route index element={<GameLogin />} />
           
           <Route path="/blog/:slug" element = {<BlogPost/>}/>
-          <Route path="/game/:game" element = {<GameInfoPage/>}/>
+          <Route path="/game/:game" element = {<GameInfoPage />}/>
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
