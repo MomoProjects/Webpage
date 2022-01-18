@@ -1,64 +1,57 @@
-// eslint-disable
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import "./App.css";
-import react from "react";
-import { Grid, Button } from '@mui/material';
-import TopScorenumbers from './Scorenumbers/TopScorenumbers'
-import LeftScorenumber from './Scorenumbers/LeftScoreNumbers'
-import Playerboard from './Playerboard/playerboard'
-import { setGameData, setUpdate } from './counterSlice'
-import { useDispatch, connect } from "react-redux";
-import socket from './Resources/socket'
+import * as React from "react";
+import { Routes, Route, Outlet, Link, useParams } from "react-router-dom";
+import GameInfoPage from "./GameInfoPage/GameInfoPage";
+import GameLogin from "./GameLogin/GameLogin";
+
+export default function App() {
 
 
-function App(props) {
 
-  socket.on('connect',()=>{
-    console.log("Connected")
-  })
-  const dispatch = useDispatch();
-  const [reRen, setReRen] = useState(true);
-
-  useEffect(() => {
-
-    getGameInfo();
-    console.log("Use effect triggered")
-
-  }, [reRen])
-  socket.off().on('Update-Notification', (e)=>{
-    console.log(e)
-    console.log("calling api again");
-    getGameInfo();
-  })
-  var getGameInfo = () =>{
-    axios.get('https://cryptic-wildwood-11303.herokuapp.com/game/0').then(async (res) => {
-      let data = await res.data;
-      dispatch(setGameData(data));
-      dispatch(setUpdate(!props.trigger))
-    })
-  }
 
   return (
-    <react.Fragment>
-      <Grid container className="Yello">
-        <Grid item xs={2}></Grid>
-        <Grid item xs={10}><TopScorenumbers /> </Grid>
-        <Grid item xs={2}><LeftScorenumber /></Grid>
-        <Grid item xs={10}><Playerboard /></Grid>
-      </Grid>
-
-      <Button onClick={() => {setReRen(!props.trigger) }}>Push me</Button>
-
-    </react.Fragment>
+    <div>
+      <GameLogin></GameLogin>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<GameLogin />} />
+          
+          <Route path="/blog/:slug" element = {<BlogPost/>}/>
+          <Route path="/game/:game" element = {<GameInfoPage/>}/>
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    trigger: state.counter.Trigger,
-    all: state.counter,
-  }
+
+function BlogPost() {
+  let { slug } = useParams();
+  return <div>Now showing post {slug}</div>;
 }
 
-export default connect(mapStateToProps)(App);
+function Layout() {
+  return (
+    <div>
+
+
+      <hr />
+
+      {/* An <Outlet> renders whatever child route is currently active,
+          so you can think about this <Outlet> as a placeholder for
+          the child routes we defined above. */}
+      <Outlet />
+    </div>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div>
+      <h2>Nothing to see here!</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
+  );
+}

@@ -15,7 +15,9 @@ export const counterSlice = createSlice({
         TopScoreIndex: 0,
         LeftScoreIndex: 0,
         PlayerIndex: 0,
-        Trigger: true
+        Trigger: true,
+        GameCode: "",
+        LegitCode: false
     },
     reducers: {
         setUpdate: (state, action) =>{
@@ -36,7 +38,28 @@ export const counterSlice = createSlice({
             state.TopScoreIndex = state.TopNumberOrder.indexOf(state.TopScore % 10);
             state.LeftScoreIndex = state.LeftNumberOrder.indexOf(state.LeftScore % 10);
             state.PlayerIndex = ((state.LeftScoreIndex * 10) + state.TopScoreIndex);
+            state.LegitCode = action.payload.LegitCode;
 
+        },
+        setGameCode:(state, action) =>{
+            state.GameCode = action.payload;
+        },
+        resetState:(state)=>{
+            state.Top= ""
+            state.Left= ""
+            state.TopPic= ""
+            state.LeftPic= ""
+            state.TopScore= 0
+            state.LeftScore= 0
+            state.TopNumberOrder= []
+            state.LeftNumberOrder= []
+            state.PeopleOnBoard= []
+            state.TopScoreIndex= 0
+            state.LeftScoreIndex= 0
+            state.PlayerIndex= 0
+            state.Trigger= true 
+            state.GameCode= ""
+            state.LegitCode=false
         }
 
     },
@@ -55,5 +78,7 @@ export const TopScoreIndex = state => state.counter.TopScoreIndex
 export const LeftScoreIndex = state => state.counter.LeftScoreIndex
 export const PlayerIndex = state => state.counter.PlayerIndex
 export const Trigger = state => state.counter.Trigger
-export const { setGameData, setUpdate} = counterSlice.actions
+export const GameCode = state => state.counter.GameCode
+export const LegitCode = state => state.counter.LegitCode
+export const { setGameData, setUpdate, setGameCode, resetState} = counterSlice.actions
 export default counterSlice.reducer

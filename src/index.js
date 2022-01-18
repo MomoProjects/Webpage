@@ -2,17 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './store'
 import { Provider } from 'react-redux';
-import {CookiesProvider} from 'react-cookie'
+import { CookiesProvider } from 'react-cookie'
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App'
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <CookiesProvider>
-    <App />
-    </CookiesProvider>
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

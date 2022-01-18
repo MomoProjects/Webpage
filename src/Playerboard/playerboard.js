@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Card } from '@mui/material';
-import { names } from '../Resources/information'
 import { useSelector } from 'react-redux';
 import { PlayerIndex, PeopleOnBoard, Trigger } from '../counterSlice';
-import axios from 'axios';
 
 
 export default function Setplayers() {

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Card } from '@mui/material';
 import { LeftNumberOrder, LeftPic, LeftScore, LeftScoreIndex, Trigger } from '../counterSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 
 export default function Leftnumbers() {
@@ -25,14 +24,17 @@ export default function Leftnumbers() {
     return (
         <React.Fragment>
             <Grid container columns={3}>
-                <Grid item xs={1}>{leftPicture}</Grid>
-                <Grid item xs={1}>{leftScore}</Grid>
+            <Grid item xs={1}><img style={{paddingLeft: "35%"}} width={100} src={`${process.env.PUBLIC_URL}/${leftPicture}.png`}/> </Grid>
+                <Grid item xs={1}><h1 style={{ border: "5px solid red", paddingTop: "37%"}}>{leftScore}</h1></Grid>
                 <Grid item xs={1}>
                     <Grid container columns={1}>
                         {leftNumber.map((element) => (
                             <Grid item key={element} xs={1} >
                                 <Card
-                                    style={{ backgroundColor: leftNumber[Ycord] === element ? 'Blue' : 'White' }} >
+
+                                    style={{
+                                        border: ".1em solid black",
+                                        backgroundColor: leftNumber[Ycord] === element ? 'Blue' : 'White' }} >
                                     {element}
                                 </Card>
                             </Grid>
